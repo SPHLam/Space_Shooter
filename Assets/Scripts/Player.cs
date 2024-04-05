@@ -13,6 +13,10 @@ public class Player : MonoBehaviour
     private float _fireRate = 0.5f;
 
     private float _nextFire = 0.0f;
+
+    // Player's lives
+    [SerializeField]
+    private int _lives = 3;
     void Start()
     {
         // transform = object
@@ -52,5 +56,18 @@ public class Player : MonoBehaviour
     {
         _nextFire = Time.time + _fireRate; // Add cooldown delay 
         Instantiate(_laserPrefab, new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z), Quaternion.identity);
+    }
+
+    public void Damage()
+    {
+       _lives--;
+        CheckDeath();
+    }
+    void CheckDeath()
+    {
+        if (_lives < 1)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
