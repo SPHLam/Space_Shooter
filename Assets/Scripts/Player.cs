@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
 
     private float _nextFire = 0.0f;
 
+    private SpawnManager _spawnManager;
+
     // Player's lives
     [SerializeField]
     private int _lives = 3;
@@ -22,6 +24,8 @@ public class Player : MonoBehaviour
         // transform = object
         // Take the current position = new position (0, 0, 0)
         transform.position = new Vector3(0, 0, 0);
+
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
     }
 
     // Update is called once per frame
@@ -61,13 +65,18 @@ public class Player : MonoBehaviour
     public void Damage()
     {
        _lives--;
-        CheckDeath();
-    }
-    void CheckDeath()
-    {
         if (_lives < 1)
         {
             Destroy(this.gameObject);
+            // Communicate with Spawn Manager and let them know stop spawning enemies
+            if(_spawnManager != null)
+            {
+                _spawnManager.StopSpawning();
+            }
+            else
+            {
+                Debug.LogError("The Spawn Manager is null!");
+            }
         }
     }
 }
