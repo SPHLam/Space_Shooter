@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
     void FireLaser()
     {
         _nextFire = Time.time + _fireRate; // Add cooldown delay 
-        Instantiate(_laserPrefab, new Vector3(transform.position.x, transform.position.y + 0.8f, transform.position.z), Quaternion.identity);
+        Instantiate(_laserPrefab, new Vector3(transform.position.x, transform.position.y + 1.05f, transform.position.z), Quaternion.identity);
     }
 
     public void Damage()
