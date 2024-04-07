@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     private float _speed = 4.0f;
     void Start()
     {
-        transform.position = new Vector3(0, 6, 0);
+        transform.position = new Vector3(Random.Range(-9.5f, 9.5f), 6, 0);
     }
 
     // Update is called once per frame

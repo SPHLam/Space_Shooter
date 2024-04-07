@@ -4,21 +4,35 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
+    // Player speed
     [SerializeField]
     private float speed = 3.5f;
+
+    // Laser
     [SerializeField]
     private GameObject _laserPrefab;
+
+    // Power up: Triple shot
+    [SerializeField]
+    private GameObject _tripleShotPrefab;
+
+    // Fire rate
     [SerializeField]
     private float _fireRate = 0.5f;
 
+    // Fire rate delay
     private float _nextFire = 0.0f;
 
+    // Enemy spawn manager
     private SpawnManager _spawnManager;
+
+    private bool _isTripleShot;
 
     // Player's lives
     [SerializeField]
     private int _lives = 3;
+
+    // Start is called before the first frame update
     void Start()
     {
         // transform = object
@@ -59,7 +73,14 @@ public class Player : MonoBehaviour
     void FireLaser()
     {
         _nextFire = Time.time + _fireRate; // Add cooldown delay 
-        Instantiate(_laserPrefab, new Vector3(transform.position.x, transform.position.y + 1.05f, transform.position.z), Quaternion.identity);
+        if (!_isTripleShot)
+        {
+            Instantiate(_laserPrefab, new Vector3(transform.position.x, transform.position.y + 1.05f, transform.position.z), Quaternion.identity);
+        } 
+        else
+        {
+            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+        }
     }
 
     public void Damage()
@@ -78,5 +99,22 @@ public class Player : MonoBehaviour
                 Debug.LogError("The Spawn Manager is null!");
             }
         }
+    }
+    
+    public void EnableTripleShot()
+    {
+        _isTripleShot = true;
+        StartCoroutine(TripleShotLifespan());
+    }
+    public void DisableTripleShot()
+    {
+        _isTripleShot = false;
+    }
+    // IENumerator TripleShotLifespan
+    // wait 5 seconds and disable triple shot
+    IEnumerator TripleShotLifespan()
+    {
+        yield return new WaitForSeconds(5f);
+        DisableTripleShot();
     }
 }
