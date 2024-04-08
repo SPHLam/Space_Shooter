@@ -9,7 +9,7 @@ public class SpawnManager : MonoBehaviour
     private GameObject _enemyPrefab;
 
     [SerializeField]
-    private GameObject _tripleShotPowerupPrefab;
+    private GameObject[] _powerUps;
 
 
     [SerializeField]
@@ -21,7 +21,7 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(SpawnEnemyRoutine(5f));
-        StartCoroutine(SpawnTripleShotRoutine(Random.Range(10f, 15f)));
+        StartCoroutine(SpawnPowerUpRoutine(Random.Range(15f, 20f)));
     }
 
     // Update is called once per frame
@@ -41,13 +41,14 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(spawnTime);
         }
     }
-    IEnumerator SpawnTripleShotRoutine(float spawnTime)
+    // Spawning power up
+    IEnumerator SpawnPowerUpRoutine(float spawnTime)
     {
-        // every 10-15 seconds, spawn in a triple-shot powerup
         while (!_stopSpawning)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6, 0);
-            Instantiate(_tripleShotPowerupPrefab, posToSpawn, Quaternion.identity);
+            int randomPowerUp = Random.Range(0, 2);
+            Instantiate(_powerUps[randomPowerUp], posToSpawn, Quaternion.identity);
             yield return new WaitForSeconds(spawnTime);
         }
     }

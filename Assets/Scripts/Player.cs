@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     // Player speed
     [SerializeField]
-    private float speed = 3.5f;
+    private float _speed = 3.5f;
 
     // Laser
     [SerializeField]
@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
         //transform.Translate(Vector3.up * verticalInput * speed * Time.deltaTime);
 
         // Movement wasd
-        transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * speed * Time.deltaTime);
+        transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _speed * Time.deltaTime);
 
         var x = Mathf.Abs(transform.position.x) >= 12 ? transform.position.x * -1 : transform.position.x;
         var y = Mathf.Abs(transform.position.y) >= 7 ? transform.position.y * -1 : transform.position.y;
@@ -83,6 +83,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Damaging feature
     public void Damage()
     {
        _lives--;
@@ -101,6 +102,7 @@ public class Player : MonoBehaviour
         }
     }
     
+    // Triple shot powerup
     public void EnableTripleShot()
     {
         _isTripleShot = true;
@@ -117,4 +119,21 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5f);
         DisableTripleShot();
     }
+
+    // Speed boost powerup
+    public void EnableSpeedBoost()
+    {
+        _speed *= 2;
+        StartCoroutine(SpeedBoostLifeSpan());
+    }
+    public void DisableSpeedBoost()
+    {
+        _speed /= 2;
+    }
+    IEnumerator SpeedBoostLifeSpan()
+    {
+        yield return new WaitForSeconds(5f);
+        DisableSpeedBoost();
+    }
 }
+
