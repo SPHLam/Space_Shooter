@@ -26,7 +26,13 @@ public class Player : MonoBehaviour
     // Enemy spawn manager
     private SpawnManager _spawnManager;
 
-    private bool _isTripleShot;
+    // Power up condition
+    private bool _isTripleShot = false;
+    private bool _isShield = false;
+
+    // Variable reference to the shield visualizer
+    [SerializeField]
+    private GameObject _shieldVisualizer;
 
     // Player's lives
     [SerializeField]
@@ -86,19 +92,27 @@ public class Player : MonoBehaviour
     // Damaging feature
     public void Damage()
     {
-       _lives--;
-        if (_lives < 1)
+        if (!_isShield)
         {
-            Destroy(this.gameObject);
-            // Communicate with Spawn Manager and let them know stop spawning enemies
-            if(_spawnManager != null)
+            _lives--;
+            if (_lives < 1)
             {
-                _spawnManager.StopSpawning();
+                Destroy(this.gameObject);
+                // Communicate with Spawn Manager and let them know stop spawning enemies
+                if (_spawnManager != null)
+                {
+                    _spawnManager.StopSpawning();
+                }
+                else
+                {
+                    Debug.LogError("The Spawn Manager is null!");
+                }
             }
-            else
-            {
-                Debug.LogError("The Spawn Manager is null!");
-            }
+        }
+        else
+        {
+            DisableShield();
+            return;
         }
     }
     
@@ -134,6 +148,24 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
         DisableSpeedBoost();
+    }
+
+    // Shield powerup
+    public void EnableShield()
+    {
+        _isShield = true;
+        _shieldVisualizer.SetActive(true);
+        StartCoroutine(ShieldLifeSpan());
+    }
+    public void DisableShield()
+    {
+        _isShield = false;
+        _shieldVisualizer.SetActive(false);
+    }
+    IEnumerator ShieldLifeSpan()
+    {
+        yield return new WaitForSeconds(20f);
+        DisableShield();
     }
 }
 
