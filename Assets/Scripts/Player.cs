@@ -116,15 +116,9 @@ public class Player : MonoBehaviour
             if (_lives < 1)
             {
                 Destroy(this.gameObject);
-                // Communicate with Spawn Manager and let them know stop spawning enemies
-                if (_spawnManager != null)
-                {
-                    _spawnManager.StopSpawning();
-                }
-                else
-                {
-                    Debug.LogError("The Spawn Manager is null!");
-                }
+
+                _spawnManager.StopSpawning();
+                _uiManager.ShowGameOver();
             }
         }
         else
