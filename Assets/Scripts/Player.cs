@@ -111,6 +111,8 @@ public class Player : MonoBehaviour
         if (!_isShield)
         {
             _lives--;
+            // Updating UI
+            _uiManager.UpdateLives(_lives);
             if (_lives < 1)
             {
                 Destroy(this.gameObject);
