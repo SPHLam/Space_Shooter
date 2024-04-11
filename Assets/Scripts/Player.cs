@@ -34,6 +34,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _shieldVisualizer;
 
+    [SerializeField]
+    private GameObject _rightEngine;
+
+    [SerializeField]
+    private GameObject _leftEngine;
+
     // Player's lives
     [SerializeField]
     private int _lives = 3;
@@ -111,6 +117,14 @@ public class Player : MonoBehaviour
         if (!_isShield)
         {
             _lives--;
+            if (_lives == 2)
+            {
+                _rightEngine.SetActive(true);
+            }
+            if (_lives == 1)
+            {
+                _leftEngine.SetActive(true);
+            }
             // Updating UI
             _uiManager.UpdateLives(_lives);
             if (_lives < 1)
