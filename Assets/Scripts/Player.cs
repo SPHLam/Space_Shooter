@@ -50,6 +50,11 @@ public class Player : MonoBehaviour
 
     private UIManager _uiManager;
 
+    [SerializeField]
+    private AudioClip _laserSoundClip;
+
+    private AudioSource _audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -67,6 +72,12 @@ public class Player : MonoBehaviour
         if(_uiManager == null)
         {
             Debug.LogError("UI Manager is null");
+        }
+
+        _audioSource = GetComponent<AudioSource>();
+        if(_audioSource == null)
+        {
+            Debug.LogError("Audio source on the player is null!");
         }
     }
 
@@ -109,6 +120,9 @@ public class Player : MonoBehaviour
         {
             Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
         }
+        // Play the audio clip 
+        _audioSource.clip = _laserSoundClip;
+        _audioSource.Play();
     }
 
     // Damaging feature

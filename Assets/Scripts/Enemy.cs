@@ -12,6 +12,8 @@ public class Enemy : MonoBehaviour
     private Animator _enemyAnimator;
 
     private Player _player;
+
+    private AudioSource _audioSource;
     void Start()
     {
         transform.position = new Vector3(Random.Range(-9.5f, 9.5f), 6, 0);
@@ -26,6 +28,11 @@ public class Enemy : MonoBehaviour
         if(_enemyAnimator == null)
         {
             Debug.LogError("Animator is null!");
+        }
+        _audioSource = GetComponent<AudioSource>();
+        if(_audioSource == null)
+        {
+            Debug.LogError("Audio source on enemy is null!");
         }
     }
 
@@ -58,6 +65,7 @@ public class Enemy : MonoBehaviour
             // trigger enemy death animation
             _enemyAnimator.SetTrigger("OnEnemyDeath");
             _speed = 0;
+            _audioSource.Play();
             Destroy(this.gameObject, 2.5f);
         }
         else if (other.tag == "Player")
@@ -65,8 +73,9 @@ public class Enemy : MonoBehaviour
             // trigger enemy death animation
             _enemyAnimator.SetTrigger("OnEnemyDeath");
             _speed = 0;
+            _audioSource.Play();
             Destroy(this.gameObject, 2.5f);
-            if(_player != null)
+            if (_player != null)
             {
                 _player.Damage();
             }
