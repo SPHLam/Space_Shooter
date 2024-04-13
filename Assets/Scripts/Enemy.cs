@@ -66,6 +66,7 @@ public class Enemy : MonoBehaviour
             _enemyAnimator.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
+            Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.5f);
         }
         else if (other.tag == "Player")
@@ -74,11 +75,12 @@ public class Enemy : MonoBehaviour
             _enemyAnimator.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
-            Destroy(this.gameObject, 2.5f);
             if (_player != null)
             {
                 _player.Damage();
             }
+            Destroy(GetComponent<Collider2D>());
+            Destroy(this.gameObject, 2.5f);
         }
     }
 }
