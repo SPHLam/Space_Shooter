@@ -49,6 +49,7 @@ public class Player : MonoBehaviour
     private int _score = 0;
 
     private UIManager _uiManager;
+    private GameManager _gameManager;
 
     [SerializeField]
     private AudioClip _laserSoundClip;
@@ -58,9 +59,14 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // transform = object
-        // Take the current position = new position (0, 0, 0)
-        transform.position = new Vector3(0, 0, 0);
+        _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
+        // If CO-OP Mode, do nothing
+        if (!_gameManager._isCoOpMode)
+        {
+            // transform = object
+            // Take the current position = new position (0, 0, 0)
+            transform.position = new Vector3(0, 0, 0);
+        }
 
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();

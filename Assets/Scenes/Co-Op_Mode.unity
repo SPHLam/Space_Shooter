@@ -1423,6 +1423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isGameOver: 0
+  _isCoOpMode: 1
 --- !u!1001 &1996858446
 PrefabInstance:
   m_ObjectHideFlags: 0

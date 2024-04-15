@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private bool _isGameOver;
 
+    public bool _isCoOpMode = false;
+
     private void Update()
     {
         // if the R key was pressed
