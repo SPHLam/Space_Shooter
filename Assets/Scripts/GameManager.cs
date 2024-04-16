@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    private bool _isGameOver;
+    private bool _isGameOver = false;
 
     public bool _isCoOpMode = false;
 

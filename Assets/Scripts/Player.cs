@@ -21,7 +21,8 @@ public class Player : MonoBehaviour
     private float _fireRate = 0.5f;
 
     // Fire rate delay
-    private float _nextFire = 0.0f;
+    private float _nextFirePlayerOne = 0.0f;
+    private float _nextFirePlayerTwo = 0.0f;
 
     // Enemy spawn manager
     private SpawnManager _spawnManager;
@@ -55,6 +56,11 @@ public class Player : MonoBehaviour
     private AudioClip _laserSoundClip;
 
     private AudioSource _audioSource;
+
+    [SerializeField]
+    private bool _isPlayerOne = false;
+    [SerializeField]
+    private bool _isPlayerTwo = false;
 
     // Start is called before the first frame update
     void Start()
@@ -90,14 +96,25 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CalculateMovement();
-        // Hit the space key to spawn laser object & checking delay for firing
-        if(Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
+        if (_isPlayerOne)
         {
-            FireLaser();
+            CalculatePlayerOneMovement();
+            // Hit the space key to spawn laser object & checking delay for firing
+            if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFirePlayerOne)
+            {
+                FireLaser();
+            }
+        }
+        else if (_isPlayerTwo)
+        {
+            CalculatePlayerTwoMovement();
+            if(Input.GetKeyDown(KeyCode.KeypadEnter) && Time.time > _nextFirePlayerTwo)
+            {
+                FireLaser();
+            }
         }
     }
-    void CalculateMovement()
+    void CalculatePlayerOneMovement()
     {
         // Vector3.left = new Vector3(1, 0, 0);
         // Time.deltaTime : 1s;
@@ -110,6 +127,35 @@ public class Player : MonoBehaviour
         // Movement wasd
         transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _speed * Time.deltaTime);
 
+        // Move outside the screen will bring the Player to the opposite side
+        var x = Mathf.Abs(transform.position.x) >= 12 ? transform.position.x * -1 : transform.position.x;
+        var y = Mathf.Abs(transform.position.y) >= 7 ? transform.position.y * -1 : transform.position.y;
+        transform.position = new Vector3(x, y, 0);
+    }
+
+    void CalculatePlayerTwoMovement()
+    {
+        // Keypad 8 to move up
+        if (Input.GetKey(KeyCode.Keypad8))
+        {
+            transform.Translate(Vector3.up * _speed * Time.deltaTime);
+        }
+        // Keypad 2 to move down
+        if (Input.GetKey(KeyCode.Keypad2))
+        {
+            transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        }
+        // Keypad 4 to move right
+        if (Input.GetKey(KeyCode.Keypad4))
+        {
+            transform.Translate(Vector3.left * _speed * Time.deltaTime);
+        }
+        // Keypad 6 to move left
+        if (Input.GetKey(KeyCode.Keypad6))
+        {
+            transform.Translate(Vector3.right * _speed * Time.deltaTime);
+        }
+
         var x = Mathf.Abs(transform.position.x) >= 12 ? transform.position.x * -1 : transform.position.x;
         var y = Mathf.Abs(transform.position.y) >= 7 ? transform.position.y * -1 : transform.position.y;
         transform.position = new Vector3(x, y, 0);
@@ -117,7 +163,14 @@ public class Player : MonoBehaviour
 
     void FireLaser()
     {
-        _nextFire = Time.time + _fireRate; // Add cooldown delay 
+        if (_isPlayerOne)
+        {
+            _nextFirePlayerOne = Time.time + _fireRate; // Add cooldown delay 
+        }
+        else if(_isPlayerTwo)
+        {
+            _nextFirePlayerTwo = Time.time + _fireRate;
+        }
         if (!_isTripleShot)
         {
             Instantiate(_laserPrefab, new Vector3(transform.position.x, transform.position.y + 1.05f, transform.position.z), Quaternion.identity);
