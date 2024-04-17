@@ -22,6 +22,8 @@ public class UIManager : MonoBehaviour
     private Text _restartText;
 
     private GameManager _gameManager;
+
+    private bool _isCoOpMode = false;
     // Start is called before the first frame update
     void Start()
     {

@@ -1361,6 +1361,7 @@ MonoBehaviour:
   _laserSoundClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _isPlayerOne: 1
   _isPlayerTwo: 0
+  _isCoOpMode: 0
 --- !u!212 &1373358289
 SpriteRenderer:
   m_ObjectHideFlags: 0

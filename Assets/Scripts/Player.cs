@@ -65,6 +65,12 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        if (_uiManager == null)
+        {
+            Debug.LogError("UI Manager is null");
+        }
+
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         // If CO-OP Mode, do nothing
         if (!_gameManager._isCoOpMode)
@@ -74,18 +80,13 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(0, 0, 0);
         }
 
+        
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
-        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
-
         if(_spawnManager == null)
         {
             Debug.LogError("Spawn Manager is null");
         }
-        if(_uiManager == null)
-        {
-            Debug.LogError("UI Manager is null");
-        }
-
+        
         _audioSource = GetComponent<AudioSource>();
         if(_audioSource == null)
         {

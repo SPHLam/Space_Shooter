@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]
     private bool _isGameOver = false;
-
+    
     public bool _isCoOpMode = false;
 
     private void Update()
@@ -16,7 +16,14 @@ public class GameManager : MonoBehaviour
         // restart the current scene
         if(Input.GetKeyDown(KeyCode.R) && _isGameOver == true)
         {
-            SceneManager.LoadScene(1); // "Game" scene
+            if (!_isCoOpMode)
+            {
+                SceneManager.LoadScene(1);
+            }
+            else
+            {
+                SceneManager.LoadScene(3);
+            }
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
