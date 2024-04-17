@@ -96,6 +96,7 @@ public class Enemy : MonoBehaviour
         }
         else if (other.tag == "Player")
         {
+            Debug.Log("Player touched!");
             // trigger enemy death animation
             _enemyAnimator.SetTrigger("OnEnemyDeath");
             _speed = 0;
