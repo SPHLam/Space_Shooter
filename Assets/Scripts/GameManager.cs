@@ -9,6 +9,16 @@ public class GameManager : MonoBehaviour
     private bool _isGameOver = false;
     
     public bool _isCoOpMode = false;
+    private UIManager _uiManager;
+    private void Start()
+    {
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        if(_uiManager == null)
+        {
+            Debug.LogError("UI Manager is null!");
+        }
+
+    }
 
     private void Update()
     {
@@ -29,10 +39,23 @@ public class GameManager : MonoBehaviour
         {
             Application.Quit();
         }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            PauseGame();
+            _uiManager.ShowPausePanel();
+        }
     }
 
     public void GameOver()
     {
         _isGameOver = true;
+    }
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
     }
 }

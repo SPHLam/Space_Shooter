@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -23,7 +24,11 @@ public class UIManager : MonoBehaviour
 
     private GameManager _gameManager;
 
-    private bool _isCoOpMode = false;
+    [SerializeField]
+    private GameObject _pausePanel;
+
+    private Animator _pausePanelAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,10 +36,19 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: " + 0;
         _gameOverText.gameObject.SetActive(false);
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
-
         if(_gameManager == null)
         {
             Debug.LogError("GameManager is null!");
+        }
+
+        _pausePanelAnimator = GameObject.Find("Pause_Menu_Panel").GetComponent<Animator>();
+        if(_pausePanelAnimator == null)
+        {
+            Debug.LogError("Pause panel animator is null!");
+        }
+        else
+        {
+            _pausePanelAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
         }
     }
 
@@ -65,5 +79,24 @@ public class UIManager : MonoBehaviour
             _gameOverText.text = "";
             yield return new WaitForSeconds(0.5f);
         }
+    }
+
+    public void ShowPausePanel()
+    {
+        _pausePanel.SetActive(true);
+        _pausePanelAnimator.SetBool("isPaused", true);
+    }
+
+    public void ResumeGame()
+    {
+        _pausePanel.SetActive(false);
+        _gameManager.ResumeGame();
+        _pausePanelAnimator.SetBool("isPaused", false);
+    }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene(2);
+        ResumeGame();
     }
 }
