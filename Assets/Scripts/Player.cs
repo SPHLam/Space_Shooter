@@ -48,6 +48,7 @@ public class Player : MonoBehaviour
     // Score
     [SerializeField]
     private int _score = 0;
+    private int _bestScore;
 
     private UIManager _uiManager;
     private GameManager _gameManager;
@@ -92,6 +93,8 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Audio source on the player is null!");
         }
+
+        _bestScore = PlayerPrefs.GetInt("Best Score", 0);
     }
 
     // Update is called once per frame
@@ -203,9 +206,10 @@ public class Player : MonoBehaviour
             _uiManager.UpdateLives(_lives);
             if (_lives < 1)
             {
-                Destroy(this.gameObject);
                 _spawnManager.StopSpawning();
                 _uiManager.ShowGameOver();
+                CheckForBestScore();
+                Destroy(this.gameObject);
             }
         }
         else
@@ -272,6 +276,16 @@ public class Player : MonoBehaviour
     {
         _score += points;
         _uiManager.UpdateScore(_score);
+    }
+
+    private void CheckForBestScore()
+    {
+        if (_score > _bestScore)
+        {
+            _bestScore = _score;
+            PlayerPrefs.SetInt("Best Score", _bestScore);
+            _uiManager.UpdateBestScore(_bestScore);
+        }
     }
 }
 

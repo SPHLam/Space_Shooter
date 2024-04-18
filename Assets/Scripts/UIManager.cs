@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     // Handle to Text
     [SerializeField]
     private Text _scoreText;
+    [SerializeField]
+    private Text _bestScoreText;
 
     [SerializeField]
     private Image _livesImage;
@@ -29,11 +31,15 @@ public class UIManager : MonoBehaviour
 
     private Animator _pausePanelAnimator;
 
+    private int _bestScore;
+
     // Start is called before the first frame update
     void Start()
     {
         // Assign text component to handle
         _scoreText.text = "Score: " + 0;
+        _bestScore = PlayerPrefs.GetInt("Best Score", 0);
+        _bestScoreText.text = "Best: " + _bestScore;
         _gameOverText.gameObject.SetActive(false);
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         if(_gameManager == null)
@@ -51,11 +57,17 @@ public class UIManager : MonoBehaviour
             _pausePanelAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
         }
     }
+    
 
     // Update is called once per frame
     public void UpdateScore(int playerScore)
     {
         _scoreText.text = "Score: " + playerScore;
+    }
+
+    public void UpdateBestScore(int newBestScore)
+    {
+        _bestScoreText.text = "Best: " + newBestScore;
     }
 
     public void UpdateLives(int currentLives)
